@@ -1,6 +1,7 @@
 package com.javatechie.spring.batch.config;
 
 import com.javatechie.spring.batch.entity.Customer;
+import com.javatechie.spring.batch.entity.CustomerDao;
 import com.javatechie.spring.batch.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -65,8 +66,8 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public RepositoryItemWriter<Customer> writer() {
-        RepositoryItemWriter<Customer> writer = new RepositoryItemWriter<>();
+    public RepositoryItemWriter<CustomerDao> writer() {
+        RepositoryItemWriter<CustomerDao> writer = new RepositoryItemWriter<>();
         writer.setRepository(customerRepository);
         writer.setMethodName("save");
         return writer;
@@ -74,7 +75,7 @@ public class SpringBatchConfig {
 
     @Bean
     public Step step1() {
-        return stepBuilderFactory.get("csv-step").<Customer, Customer>chunk(10)
+        return stepBuilderFactory.get("csv-step").<Customer, CustomerDao>chunk(10)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
